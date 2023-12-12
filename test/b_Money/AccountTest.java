@@ -23,6 +23,7 @@ public class AccountTest {
         SweBank.deposit("Alice", new Money(1000000, SEK));
     }
 
+    //Testing if adding and removing a timed payment works fine. Test passed.
     @Test
     public void testAddRemoveTimedPayment() throws TimedPaymentExistsException, TimedPaymentDoesNotExistException, InvalidValueException {
         testAccount.addTimedPayment("1", 2, 4, new Money(5000, SEK), SweBank, "Alice");
@@ -31,11 +32,13 @@ public class AccountTest {
         assertFalse(testAccount.timedPaymentExists("1"));
     }
 
+    //Testing if you can remove a non-existent timed payment. Test passed, exception thrown.
     @Test(expected = TimedPaymentDoesNotExistException.class)
     public void testRemoveTimedPayment() throws TimedPaymentDoesNotExistException {
         testAccount.removeTimedPayment("1");
     }
 
+    //Checking if you can overwrite an existing timed payment. Test passed, exception is thrown.
     @Test(expected = TimedPaymentExistsException.class)
     public void testAddRemoveTimedPayment1() throws TimedPaymentExistsException, InvalidValueException {
         testAccount.addTimedPayment("1", 2, 4, new Money(5000, SEK), SweBank, "Alice");
@@ -56,19 +59,21 @@ public class AccountTest {
         assertEquals(8000000, testAccount.getBalance().getAmount(), 0);
     }
 
+    //Testing if balance increases from depositing. Test passed.
     @Test
     public void testDeposit() throws AccountDoesNotExistException, InvalidValueException {
         SweBank.deposit("Alice", new Money(1000000, SEK));
         assertEquals(2000000, SweBank.getBalance("Alice"), 0);
     }
 
+    //Testing if you can deposit a negative value. Test passed, exception thrown.
     @Test(expected = InvalidValueException.class)
     public void testDeposit1() throws AccountDoesNotExistException, InvalidValueException {
         SweBank.deposit("Alice", new Money(-1000000, SEK));
         assertEquals(2000000, SweBank.getBalance("Alice"), 0);
     }
 
-    //Test failed. Money was added, not substracted.
+    //Test failed. Money was added, not subtracted.
     @Test
     public void testWithdraw() throws AccountDoesNotExistException, InvalidValueException {
         SweBank.withdraw("Alice", new Money(1000000, SEK));
